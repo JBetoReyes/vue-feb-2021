@@ -74,7 +74,6 @@ class PlatziReactive {
     }
 
     pBind(el, target, name, attr) {
-        console.log('attr: ', attr);
         el.setAttribute(attr, Reflect.get(target, name));
     }
 }
