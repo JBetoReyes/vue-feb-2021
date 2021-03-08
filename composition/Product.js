@@ -28,7 +28,7 @@ app.component("product", {
                 <span>Codigo de Descuento</span>
                 <input type="text" placeholder="Enter your code" @keyup.enter="applyDiscounts($event)">
             </div>
-            <button :disabled="product.stock === 0" @click="addToCart($event)">Add to Cart</button>
+            <button :disabled="product.stock === 0" @click="sendToCart()">Add to Cart</button>
         </section>    
     `,
     props: {
@@ -40,7 +40,8 @@ app.component("product", {
             type: Array
         }
     },
-    setup(props) {
+    emits: ['sendtocart'],
+    setup(props, context) {
     
         const discountCodes = ref(['PLATZI20', 'IOSAMUEL']);
         const productState = reactive({
@@ -55,20 +56,14 @@ app.component("product", {
             }
         }
 
-        function addToCart(event) {
-            const productIndex = props.cart.findIndex(prod => prod.name === props.product.name);
-            if (productIndex >= 0) {
-                props.cart[productIndex].quantity += 1
-            } else {
-                props.cart.push(props.product);    
-            }
-            props.product.stock -= 1;  
+        function sendToCart() {
+            context.emit('sendtocart', props.product);
         }
 
         return {
             ...toRefs(productState),
             
-            addToCart,
+            sendToCart,
             applyDiscounts
         };
     }
