@@ -28,10 +28,11 @@ app.component("product", {
                 <span>Discount code</span>
                 <input type="text" placeholder="Enter your code" @keyup.enter="applyDiscounts($event)">
             </div>
-            <button :disabled="product.stock === 0" @click="addToCart($event)">Add to Cart</button>
+            <button :disabled="product.stock === 0" @click="sendToCart()">Add to Cart</button>
         </section>
     `,
     props: ["product"],
+    emits: ["sendtocart"],
     data() {
         return {
             activeImage: 0,
@@ -47,14 +48,17 @@ app.component("product", {
                 this.discountCodes.splice(discountIndex, 1);
             }
         },
-        addToCart() {
-            const productIndex = this.cart.findIndex(prod => prod.name === this.product.name);
-            if (productIndex >= 0) {
-                this.cart[productIndex].quantity += 1
-            } else {
-                this.cart.push(this.product);
-            }
-            this.product.stock -= 1;
+        // addToCart() {
+        //     const productIndex = this.cart.findIndex(prod => prod.name === this.product.name);
+        //     if (productIndex >= 0) {
+        //         this.cart[productIndex].quantity += 1
+        //     } else {
+        //         this.cart.push(this.product);
+        //     }
+        //     this.product.stock -= 1;
+        // }
+        sendToCart() {
+            this.$emit("sendtocart", this.product);
         }
     }
 });
