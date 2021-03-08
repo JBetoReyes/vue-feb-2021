@@ -25,51 +25,36 @@ app.component("product", {
             <p class="description__content">
             </p>
             <div class="discount">
-                <span>Codigo de Descuento</span>
+                <span>Discount code</span>
                 <input type="text" placeholder="Enter your code" @keyup.enter="applyDiscounts($event)">
             </div>
             <button :disabled="product.stock === 0" @click="addToCart($event)">Add to Cart</button>
         </section>
     `,
+    props: ["product"],
     data() {
         return {
-            product: {
-                name: 'Camera',
-                price: 450_000,
-                stock: 6,
-                content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus
-                    reiciendis quis optio molestiae culpa ex aut nemo eaque inventore?`,
-                images: [{
-                    image: "./images/camara.jpg",
-                    thumbnail: "./images/camara-thumb.jpg"
-                }, {
-                    image: "./images/camara-2.jpg",
-                    thumbnail: "./images/camara-2-thumb.jpg"
-                }],
-                new: false,
-                offer: true,
-                quantity: 1
-            },
             activeImage: 0,
             discountCodes: ["PLATZI20", "IOSAMUEL"]
         }
     },
     methods: {
-        applyDiscounts() {
-            const discountIndex = discountsCodes.value.indexOf(event.target.value);
+        applyDiscounts(event) {
+            console.log('event: ', event.target);
+            const discountIndex = this.discountCodes.indexOf(event.target.value);
             if (discountIndex >= 0) {
-                productState.product.price *= 50 / 100;
-                discountsCodes.value.splice(discountIndex, 1);
+                this.product.price *= 50 / 100;
+                this.discountCodes.splice(discountIndex, 1);
             }
         },
         addToCart() {
-            const productIndex = cartState.cart.findIndex(prod => prod.name === productState.product.name);
+            const productIndex = this.cart.findIndex(prod => prod.name === this.product.name);
             if (productIndex >= 0) {
-                cartState.cart[productIndex].quantity += 1
+                this.cart[productIndex].quantity += 1
             } else {
-                cartState.cart.push(productState.product);
+                this.cart.push(this.product);
             }
-            productState.product.stock -= 1;
+            this.product.stock -= 1;
         }
     }
 });

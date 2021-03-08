@@ -17,15 +17,13 @@
                 <div class="cart-content__product" v-for="(product, index) in cart" :key="product.name"
                     :class="{ 'bg-gray': index & 1 }">
                     <img :src="product.images[0].image" alt="product.name.toUppercase()">
-                    <span>{{ product.name }} - $ {{ new Intl.NumberFormat("es-CO").format(product.price) }} ({{ product.quantity }})</span>
+                    <span>{{ product.name }} - $ {{ new Intl.NumberFormat("es-CO").format(product.price) }} ({{
+                        product.quantity }})</span>
                 </div>
             </div>
         </header>
         <main>
-            <product></product>
-            <product></product>
-            <product></product>
-            <product></product>
+            <product v-for="product in products" :key="product.name" :product="product" ></product>
         </main>
     </div>
     <script src="https://unpkg.com/vue@next"></script>
@@ -34,6 +32,39 @@
         const app = createApp({
             data() {
                 return {
+                    products: [{
+                        name: 'Camera',
+                        price: 450_000,
+                        stock: 6,
+                        content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus
+                    reiciendis quis optio molestiae culpa ex aut nemo eaque inventore?`,
+                        images: [{
+                            image: "./images/camara.jpg",
+                            thumbnail: "./images/camara-thumb.jpg"
+                        }, {
+                            image: "./images/camara-2.jpg",
+                            thumbnail: "./images/camara-2-thumb.jpg"
+                        }],
+                        new: false,
+                        offer: true,
+                        quantity: 1
+                    }, {
+                        name: 'Camera 2',
+                        price: 500_000,
+                        stock: 6,
+                        content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus
+                    reiciendis quis optio molestiae culpa ex aut nemo eaque inventore?`,
+                        images: [{
+                            image: "./images/camara.jpg",
+                            thumbnail: "./images/camara-thumb.jpg"
+                        }, {
+                            image: "./images/camara-2.jpg",
+                            thumbnail: "./images/camara-2-thumb.jpg"
+                        }],
+                        new: false,
+                        offer: true,
+                        quantity: 1
+                    }],
                     cartOpen: true,
                     cart: []
                 }
