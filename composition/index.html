@@ -17,35 +17,67 @@
                 <div class="cart-content__product" v-for="(product, index) in cart" :key="product.name"
                     :class="{ 'bg-gray': index & 1 }">
                     <img :src="product.images[0].image" alt="product.name.toUppercase()">
-                    <span>{{ product.name }} - $ {{ new Intl.NumberFormat("es-CO").format(product.price) }} ({{ product.quantity }})</span>
+                    <span>{{ product.name }} - $ {{ new Intl.NumberFormat("es-CO").format(product.price) }}</span>
                 </div>
             </div>
         </header>
         <main>
-            <product></product>
-            <product></product>
-            <product></product>
-            <product></product>
+            <product v-for="product in products" :key="product.name" :product="product" :cart="cart"> </product>
         </main>
     </div>
     <script src="https://unpkg.com/vue@next"></script>
     <script>
         const { createApp, ref, reactive, toRefs } = Vue;
         const app = createApp({
-            data() {
-                return {
-                    cartOpen: true,
-                    cart: []
-                }
-            },
-            methods: {
+            setup() {
+                const products = ref([{
+                    name: 'Camera',
+                    price: 450_000,
+                    stock: 6,
+                    content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus
+                            reiciendis quis optio molestiae culpa ex aut nemo eaque inventore?`,
+                    images: [{
+                        image: "./images/camara.jpg",
+                        thumbnail: "./images/camara-thumb.jpg"
+                    }, {
+                        image: "./images/camara-2.jpg",
+                        thumbnail: "./images/camara-2-thumb.jpg"
+                    }],
+                    new: false,
+                    offer: true,
+                    quantity: 1,
+                }, {
+                    name: 'Camera2',
+                    price: 550_000,
+                    stock: 6,
+                    content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus
+                            reiciendis quis optio molestiae culpa ex aut nemo eaque inventore?`,
+                    images: [{
+                        image: "./images/camara.jpg",
+                        thumbnail: "./images/camara-thumb.jpg"
+                    }, {
+                        image: "./images/camara-2.jpg",
+                        thumbnail: "./images/camara-2-thumb.jpg"
+                    }],
+                    new: false,
+                    offer: true,
+                    quantity: 1,
+                }]);
 
+                const cartState = reactive({
+                    cart: [],
+                    cartOpen: false
+                });
+                return {
+                    products,
+                    ...toRefs(cartState),
+                }
             }
         });
     </script>
     <script src="./Product.js"></script>
     <script>
-        app.mount('#app');
+        app.mount("#app")
     </script>
 </body>
 
