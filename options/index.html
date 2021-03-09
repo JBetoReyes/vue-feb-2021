@@ -20,6 +20,7 @@
                     <span>{{ product.name }} - $ {{ new Intl.NumberFormat("es-CO").format(product.price) }} ({{
                         product.quantity }})</span>
                 </div>
+                <div>Total: $ {{new Intl.NumberFormat("es-CO").format(cartTotal)}}</div>
             </div>
         </header>
         <main>
@@ -66,7 +67,8 @@
                         quantity: 1
                     }],
                     cartOpen: true,
-                    cart: []
+                    cart: [],
+                    cartTotal: 0
                 }
             },
             methods: {
@@ -78,6 +80,18 @@
                         this.cart.push(product);
                     }
                     product.stock -= 1;
+                }
+            },
+            watch: {
+                cart: {
+                    handler(cart){
+                        this.cartTotal = cart.reduce((acc, product) => {
+                            console.log('product: ', product);
+                            const productTotal = product.price * product.quantity;
+                            return acc + productTotal;
+                        }, 0);
+                    },
+                    deep: true
                 }
             }
         });

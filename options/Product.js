@@ -21,7 +21,13 @@ app.component("product", {
             <p class="description__status" v-if="product.stock === 3">Low availability!</p>
             <p class="description__status" v-else-if="product.stock === 2">Very Low availability!</p>
             <p class="description__status" v-else="product.stock === 1">One item in stock!</p>
-            <p class="description__price">$ {{ new Intl.NumberFormat("es-CO").format(product.price)}}</p>
+            <p 
+                class="description__price"
+                :style="{
+                    color: productPriceColor
+                }"
+                >
+                    $ {{ new Intl.NumberFormat("es-CO").format(product.price)}}</p>
             <p class="description__content">
             </p>
             <div class="discount">
@@ -48,17 +54,15 @@ app.component("product", {
                 this.discountCodes.splice(discountIndex, 1);
             }
         },
-        // addToCart() {
-        //     const productIndex = this.cart.findIndex(prod => prod.name === this.product.name);
-        //     if (productIndex >= 0) {
-        //         this.cart[productIndex].quantity += 1
-        //     } else {
-        //         this.cart.push(this.product);
-        //     }
-        //     this.product.stock -= 1;
-        // }
         sendToCart() {
             this.$emit("sendtocart", this.product);
+        }
+    },
+    watch: {
+        "product.stock"(stock) {
+            if (stock < 1) {
+                this.productPriceColor = 'rgb(188 30 67)';
+            }
         }
     }
 });
